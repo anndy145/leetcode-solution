@@ -1,9 +1,6 @@
-# LeetCode Solutions
-
-
 ![LeetCode Stats](https://leetcard.jacoblin.cool/anndy145?theme=dark&font=ABeeZee)
 
-### This repository contains my solutions to LeetCode problems.
+This repository contains my solutions to LeetCode problems.
 
 # LeetCode Solutions
 
