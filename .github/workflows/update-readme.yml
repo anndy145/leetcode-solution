@@ -21,7 +21,7 @@ jobs:
         id: count
         shell: bash
         run: |
-          count=$(find . \
+          total=$(find . \
             -type f \
             \( -name "*.cpp" -o -name "*.c" -o -name "*.sql" -o -name "*.sh" \) \
             | sed 's#.*/##' \
@@ -30,23 +30,80 @@ jobs:
             | sort -u \
             | wc -l)
 
-          echo "count=$count" >> "$GITHUB_OUTPUT"
-          echo "Solved problems: $count"
+          cpp=$(find . -type f -name "*.cpp" \
+            | sed 's#.*/##' \
+            | grep -E '^[0-9]{4}-' \
+            | cut -d'-' -f1 \
+            | sort -u \
+            | wc -l)
+
+          c=$(find . -type f -name "*.c" \
+            | sed 's#.*/##' \
+            | grep -E '^[0-9]{4}-' \
+            | cut -d'-' -f1 \
+            | sort -u \
+            | wc -l)
+
+          sql=$(find . -type f -name "*.sql" \
+            | sed 's#.*/##' \
+            | grep -E '^[0-9]{4}-' \
+            | cut -d'-' -f1 \
+            | sort -u \
+            | wc -l)
+
+          shell=$(find . -type f -name "*.sh" \
+            | sed 's#.*/##' \
+            | grep -E '^[0-9]{4}-' \
+            | cut -d'-' -f1 \
+            | sort -u \
+            | wc -l)
+
+          echo "total=$total" >> "$GITHUB_OUTPUT"
+          echo "cpp=$cpp" >> "$GITHUB_OUTPUT"
+          echo "c=$c" >> "$GITHUB_OUTPUT"
+          echo "sql=$sql" >> "$GITHUB_OUTPUT"
+          echo "shell=$shell" >> "$GITHUB_OUTPUT"
+
+          echo "Total: $total"
+          echo "C++: $cpp"
+          echo "C: $c"
+          echo "SQL: $sql"
+          echo "Shell: $shell"
 
       - name: Update README
         shell: bash
         run: |
-          count="${{ steps.count.outputs.count }}"
+          total="${{ steps.count.outputs.total }}"
+          cpp="${{ steps.count.outputs.cpp }}"
+          c="${{ steps.count.outputs.c }}"
+          sql="${{ steps.count.outputs.sql }}"
+          shell="${{ steps.count.outputs.shell }}"
 
           sed -i -E \
-            "s#Solved Problems: \*\*<!-- SOLVED_COUNT -->[0-9]+<!-- SOLVED_COUNT -->\*\*#Solved Problems: **<!-- SOLVED_COUNT -->${count}<!-- SOLVED_COUNT -->**#" \
+            "s#Solved Problems: \*\*<!-- SOLVED_COUNT -->[0-9]+<!-- SOLVED_COUNT -->\*\*#Solved Problems: **<!-- SOLVED_COUNT -->${total}<!-- SOLVED_COUNT -->**#" \
+            README.md
+
+          sed -i -E \
+            "s#C\+\+: \*\*<!-- CPP_COUNT -->[0-9]+<!-- CPP_COUNT -->\*\*#C++: **<!-- CPP_COUNT -->${cpp}<!-- CPP_COUNT -->**#" \
+            README.md
+
+          sed -i -E \
+            "s#C: \*\*<!-- C_COUNT -->[0-9]+<!-- C_COUNT -->\*\*#C: **<!-- C_COUNT -->${c}<!-- C_COUNT -->**#" \
+            README.md
+
+          sed -i -E \
+            "s#SQL: \*\*<!-- SQL_COUNT -->[0-9]+<!-- SQL_COUNT -->\*\*#SQL: **<!-- SQL_COUNT -->${sql}<!-- SQL_COUNT -->**#" \
+            README.md
+
+          sed -i -E \
+            "s#Shell: \*\*<!-- SHELL_COUNT -->[0-9]+<!-- SHELL_COUNT -->\*\*#Shell: **<!-- SHELL_COUNT -->${shell}<!-- SHELL_COUNT -->**#" \
             README.md
 
       - name: Commit changes
         shell: bash
         run: |
           if git diff --quiet; then
-            echo "No changes."
+            echo "No changes to commit."
             exit 0
           fi
 
