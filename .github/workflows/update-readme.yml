@@ -1,52 +1,81 @@
-- name: Count solved problems
-  id: count
-  shell: bash
-  run: |
-    total=$(find . \
-      -type f \
-      \( -name "*.cpp" -o -name "*.c" -o -name "*.sql" -o -name "*.sh" \) \
-      | sed 's#.*/##' \
-      | awk '/^[0-9]{4}-/' \
-      | cut -d'-' -f1 \
-      | sort -u \
-      | wc -l)
+name: Update README Problem Count
 
-    cpp=$(find . -type f -name "*.cpp" \
-      | sed 's#.*/##' \
-      | awk '/^[0-9]{4}-/' \
-      | cut -d'-' -f1 \
-      | sort -u \
-      | wc -l)
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-    c=$(find . -type f -name "*.c" \
-      | sed 's#.*/##' \
-      | awk '/^[0-9]{4}-/' \
-      | cut -d'-' -f1 \
-      | sort -u \
-      | wc -l)
+permissions:
+  contents: write
 
-    sql=$(find . -type f -name "*.sql" \
-      | sed 's#.*/##' \
-      | awk '/^[0-9]{4}-/' \
-      | cut -d'-' -f1 \
-      | sort -u \
-      | wc -l)
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
 
-    shell=$(find . -type f -name "*.sh" \
-      | sed 's#.*/##' \
-      | awk '/^[0-9]{4}-/' \
-      | cut -d'-' -f1 \
-      | sort -u \
-      | wc -l)
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    echo "total=$total" >> "$GITHUB_OUTPUT"
-    echo "cpp=$cpp" >> "$GITHUB_OUTPUT"
-    echo "c=$c" >> "$GITHUB_OUTPUT"
-    echo "sql=$sql" >> "$GITHUB_OUTPUT"
-    echo "shell=$shell" >> "$GITHUB_OUTPUT"
+      - name: Count solved problems
+        id: count
+        shell: bash
+        run: |
+          count_problems() {
+            git ls-files "$1" \
+              | xargs -r -n1 basename \
+              | grep -E '^[0-9]{4}-' \
+              | cut -d'-' -f1 \
+              | sort -u \
+              | wc -l \
+              | tr -d '[:space:]'
+          }
 
-    echo "Total: $total"
-    echo "C++: $cpp"
-    echo "C: $c"
-    echo "SQL: $sql"
-    echo "Shell: $shell"
+          cpp=$(count_problems '*.cpp')
+          c=$(count_problems '*.c')
+          sql=$(count_problems '*.sql')
+          shell=$(count_problems '*.sh')
+          total=$(git ls-files '*.cpp' '*.c' '*.sql' '*.sh' \
+            | xargs -r -n1 basename \
+            | grep -E '^[0-9]{4}-' \
+            | cut -d'-' -f1 \
+            | sort -u \
+            | wc -l \
+            | tr -d '[:space:]')
+
+          {
+            echo "total=$total"
+            echo "cpp=$cpp"
+            echo "c=$c"
+            echo "sql=$sql"
+            echo "shell=$shell"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Update README
+        env:
+          TOTAL: ${{ steps.count.outputs.total }}
+          CPP: ${{ steps.count.outputs.cpp }}
+          C: ${{ steps.count.outputs.c }}
+          SQL: ${{ steps.count.outputs.sql }}
+          SHELL: ${{ steps.count.outputs.shell }}
+        shell: bash
+        run: |
+          sed -i -E "s#(<!-- SOLVED_COUNT -->)[0-9]+(<!-- SOLVED_COUNT -->)#\\1${TOTAL}\\2#" README.md
+          sed -i -E "s#(<!-- CPP_COUNT -->)[0-9]+(<!-- CPP_COUNT -->)#\\1${CPP}\\2#" README.md
+          sed -i -E "s#(<!-- C_COUNT -->)[0-9]+(<!-- C_COUNT -->)#\\1${C}\\2#" README.md
+          sed -i -E "s#(<!-- SQL_COUNT -->)[0-9]+(<!-- SQL_COUNT -->)#\\1${SQL}\\2#" README.md
+          sed -i -E "s#(<!-- SHELL_COUNT -->)[0-9]+(<!-- SHELL_COUNT -->)#\\1${SHELL}\\2#" README.md
+
+      - name: Commit README changes
+        shell: bash
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README is already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update solved problem count"
+          git push
