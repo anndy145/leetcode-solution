@@ -1,19 +1,17 @@
-![LeetCode Stats](https://leetcard.jacoblin.cool/anndy145?theme=dark&font=ABeeZee)
-
-This repository contains my solutions to LeetCode problems.
-
 # LeetCode Solutions
 
 This repository contains my solutions to LeetCode problems.
 
-I created this repository to document my learning progress and improve my
-problem-solving skills, data structures, algorithms, and C++ programming.
+## Progress
+
+Solved Problems: **<!-- SOLVED_COUNT -->0<!-- SOLVED_COUNT -->**
 
 ## Language
 
 - C++
-- C (occasionally)
-- MySQL (ocassionally)
+- C
+- SQL
+- Shell
 
 ## Goal
 
