@@ -2,10 +2,6 @@
 
 This repository contains my solutions to LeetCode problems.
 
-## Progress
-
-Solved Problems: **<!-- SOLVED_COUNT -->22<!-- SOLVED_COUNT -->**
-
 ## Language
 
 - C++
