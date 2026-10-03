@@ -21,61 +21,38 @@ jobs:
         id: count
         shell: bash
         run: |
-          count_problems() {
-            git ls-files "$1" \
-              | xargs -r -n1 basename \
-              | grep -E '^[0-9]{4}-' \
-              | cut -d'-' -f1 \
-              | sort -u \
-              | wc -l \
-              | tr -d '[:space:]'
-          }
-
-          cpp=$(count_problems '*.cpp')
-          c=$(count_problems '*.c')
-          sql=$(count_problems '*.sql')
-          shell=$(count_problems '*.sh')
-          total=$(git ls-files '*.cpp' '*.c' '*.sql' '*.sh' \
-            | xargs -r -n1 basename \
+          count=$(find . \
+            -type f \
+            \( -name "*.cpp" -o -name "*.c" -o -name "*.sql" -o -name "*.sh" \) \
+            | sed 's#.*/##' \
             | grep -E '^[0-9]{4}-' \
             | cut -d'-' -f1 \
             | sort -u \
-            | wc -l \
-            | tr -d '[:space:]')
+            | wc -l)
 
-          {
-            echo "total=$total"
-            echo "cpp=$cpp"
-            echo "c=$c"
-            echo "sql=$sql"
-            echo "shell=$shell"
-          } >> "$GITHUB_OUTPUT"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          echo "Solved problems: $count"
 
       - name: Update README
-        env:
-          TOTAL: ${{ steps.count.outputs.total }}
-          CPP: ${{ steps.count.outputs.cpp }}
-          C: ${{ steps.count.outputs.c }}
-          SQL: ${{ steps.count.outputs.sql }}
-          SHELL: ${{ steps.count.outputs.shell }}
         shell: bash
         run: |
-          sed -i -E "s#(<!-- SOLVED_COUNT -->)[0-9]+(<!-- SOLVED_COUNT -->)#\\1${TOTAL}\\2#" README.md
-          sed -i -E "s#(<!-- CPP_COUNT -->)[0-9]+(<!-- CPP_COUNT -->)#\\1${CPP}\\2#" README.md
-          sed -i -E "s#(<!-- C_COUNT -->)[0-9]+(<!-- C_COUNT -->)#\\1${C}\\2#" README.md
-          sed -i -E "s#(<!-- SQL_COUNT -->)[0-9]+(<!-- SQL_COUNT -->)#\\1${SQL}\\2#" README.md
-          sed -i -E "s#(<!-- SHELL_COUNT -->)[0-9]+(<!-- SHELL_COUNT -->)#\\1${SHELL}\\2#" README.md
+          count="${{ steps.count.outputs.count }}"
 
-      - name: Commit README changes
+          sed -i -E \
+            "s#Solved Problems: \*\*<!-- SOLVED_COUNT -->[0-9]+<!-- SOLVED_COUNT -->\*\*#Solved Problems: **<!-- SOLVED_COUNT -->${count}<!-- SOLVED_COUNT -->**#" \
+            README.md
+
+      - name: Commit changes
         shell: bash
         run: |
-          if git diff --quiet -- README.md; then
-            echo "README is already up to date."
+          if git diff --quiet; then
+            echo "No changes."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add README.md
-          git commit -m "chore: update solved problem count"
+          git commit -m "update solved problem count"
           git push

@@ -8,10 +8,10 @@ Solved Problems: **<!-- SOLVED_COUNT -->21<!-- SOLVED_COUNT -->**
 
 ## Language
 
-- C++: **<!-- CPP_COUNT -->0<!-- CPP_COUNT -->**
-- C: **<!-- C_COUNT -->0<!-- C_COUNT -->**
-- SQL: **<!-- SQL_COUNT -->0<!-- SQL_COUNT -->**
-- Shell: **<!-- SHELL_COUNT -->0<!-- SHELL_COUNT -->**
+- C++
+- C
+- SQL
+- Shell
 
 ## Goal
 
