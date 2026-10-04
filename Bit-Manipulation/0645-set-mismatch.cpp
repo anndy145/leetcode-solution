@@ -25,11 +25,6 @@ public:
 };
 
 /*
-for(int i = 1;i <= n;i++){
-
-        }
-n = nums.size()
-
 建立大小 n + 1 的 count
 全部初始化為 0
 
