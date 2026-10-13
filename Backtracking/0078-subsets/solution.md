@@ -25,5 +25,5 @@ Output: `[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]`
 
 ## 複雜度
 
-**Time Complexity: $O(n)$**  
-**Space Complexity: $O(1)$**
+**Time Complexity: $O(n × 2ⁿ)$**  
+**Space Complexity: $O(n × 2ⁿ)$**
