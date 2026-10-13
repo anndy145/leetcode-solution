@@ -33,8 +33,8 @@ Output: `2`
 **Space Complexity: O(1)**
 
 ### v3(矩陣快速冪):
-**Time Complexity: O()**  
-**Space Complexity: O()**
+**Time Complexity: $O(\log n)$**  
+**Space Complexity: O(1)**
 
 ## Note
 ### fibonacci   
@@ -42,6 +42,10 @@ Output: `2`
 v1:預設 0 階和1階有1種方式,使用dynamic programmmimg,爬到 n 階有 [n - 1] + [n - 2]種方式  
 v2:觀察到是費式數列，只存所需要的變數，不用存到整個陣列  
 v3:矩陣快速冪  
+
+**Time Complexity: $O(k^3 \log n)$**  當是fib時,k = 2 ->  $O(\log n)$ 
+**Space Complexity: $O(k^2)$** 當是fib時,k = 2 ->  $O(1)$ 
+
 1.  
 相鄰兩項:
 $$\begin{bmatrix} f(n) \\ f(n-1) \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} f(n-1) \\ f(n-2) \end{bmatrix}$$
