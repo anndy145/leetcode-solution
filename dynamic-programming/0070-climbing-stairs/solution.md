@@ -24,15 +24,15 @@ Output: `2`
 ```
 
 ## 複雜度
-### v1(DP):  
+### v1 (DP):  
 **Time Complexity: O(n)**  
 **Space Complexity: O(n)**
 
-### v2(只存需要的變數):
+### v2 (只存需要的變數):
 **Time Complexity: O(n)**  
 **Space Complexity: O(1)**
 
-### v3(矩陣快速冪):
+### v3 (矩陣快速冪):
 **Time Complexity: $O(\log n)$**  
 **Space Complexity: O(1)**
 
