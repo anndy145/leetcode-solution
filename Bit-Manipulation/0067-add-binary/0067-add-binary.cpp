@@ -19,10 +19,13 @@ class Solution {
 				char bit = (sum % 2) + '0';
 
 				result.insert(0, 1, bit);
+				//result.push_back(bit);
 				carry = sum / 2;
 				i--;
 				j--;
 			}
+
+			//reverse(result.begin(), result.end());
 			return result;
 		}
 };

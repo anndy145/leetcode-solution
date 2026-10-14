@@ -38,4 +38,7 @@ Output: `10101`
 
 
 ## Note
-
+也可以先push到最後反轉
+result.push_back(bit);
+reverse(result.begin(), result.end());
+pors: 字串不用每次都移動，只要差到最後就好
