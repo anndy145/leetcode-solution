@@ -1,13 +1,3 @@
-/*
-Time Complexity O(1)
-
-
-
-
-
-*/
-
-
 class Solution {
 public:
     int reverseBits(int n) {
