@@ -37,3 +37,14 @@ Output: `[1,2,3,4,5]`
 
 ## Note
 用dummy是因為有可能要移除head節點，如果沒有 dummy，就必須另外寫刪除 head 的情況
+
+C要用
+```C
+struct ListNode dummy = {0};
+free(ptr);
+```
+C++要用
+```C++
+ListNode dummy(0);
+delete ptr;
+```
