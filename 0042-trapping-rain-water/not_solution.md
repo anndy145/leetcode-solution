@@ -9,7 +9,7 @@
 
 ## 題目意思 and 限制
 
-
+給一個array，代表牆壁的高度，rerturn 兩道牆可以裝多少水
 
 1. `n == height.length`
 2. `1 <= n <= 2 * 10^4`
@@ -21,7 +21,6 @@ Input: `height = [4,2,0,3,2,5]`
 Output: `9`
 
 ## 解法
-v1:  
 ```
 result = 0
 找到最高的地方
@@ -37,4 +36,4 @@ result = 0
 
 
 ## Note
-這樣會TLE
+這樣會TLE，not a good idea
