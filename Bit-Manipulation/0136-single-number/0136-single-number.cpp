@@ -7,5 +7,3 @@ public:
         return result;
     }
 };
-
-//全部xor
