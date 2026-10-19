@@ -38,7 +38,11 @@ Output: `10101`
 
 
 ## Note
-也可以先push到最後反轉
-result.push_back(bit);
-reverse(result.begin(), result.end());
-pors: 字串不用每次都移動，只要差到最後就好
+也可以先push到最後面，最後再反轉
+```  
+result.push_back(bit);  
+reverse(result.begin(), result.end());  
+```
+pors: 字串不用每次都移動，只要插到最後就好  
+C要記得在最後面加上`\0`  
+用C要記得malloc，如果是自己寫main要記得free
