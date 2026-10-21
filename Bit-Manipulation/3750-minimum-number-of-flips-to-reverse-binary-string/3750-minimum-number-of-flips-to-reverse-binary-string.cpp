@@ -13,7 +13,7 @@ public:
         int diff = n ^ reverse;
         while(diff != 0){
             if(diff % 2 == 1)
-            count++;
+                count++;
             diff >>= 1;
         }
         
