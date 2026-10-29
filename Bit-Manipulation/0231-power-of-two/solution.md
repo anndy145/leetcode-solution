@@ -18,7 +18,7 @@ Output: `false`
 
 ## 解法
 ```
-return ((n > 0 ) 和 n and n-1 出來是不是0)
+return ((n > 0) 和 n and n-1 出來是不是0)
 ```
 ## 複雜度
 
