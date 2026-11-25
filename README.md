@@ -6,6 +6,7 @@ This repository contains my solutions to LeetCode problems.
 
 - C++
 - C
+- Java
 - SQL
 - Shell
 
@@ -13,7 +14,6 @@ This repository contains my solutions to LeetCode problems.
 
 My goal is to continuously practice algorithms and data structures while
 improving my ability to write clean and efficient code.
-
 
 ## Note
 
